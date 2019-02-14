@@ -4,15 +4,19 @@
 
 import pinhook.plugin
 import re
-from pyquery import PyQuery
+from urllib.request import urlopen
 
-@pinhook.plugin.listener('title')
-def title(msg):
+@pinhook.plugin.listener('titler')
+def titler(msg):
   try:
-    url = re.search("(?P<url>https?://[^\s]+)", msg.text).group("url")
+    url = re.search("(?P<url>https?://\S+)", msg.text).group("url")
     if url:
-      page = PyQuery(url)
-      return pinhook.plugin.message(page("title").text())
-  except:
-    # ignore errors
+      print('found url:' + url)
+      page = str(urlopen(url).read())
+      title = re.search("<title[^>]*?>(?P<title>[^<]+)</title>", page).group("title")
+      if title:
+        print('found title:' + title)
+        return pinhook.plugin.message(title)
+  except Exception as e:
+    print(e)
     return
