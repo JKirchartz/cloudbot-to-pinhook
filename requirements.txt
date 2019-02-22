@@ -1,0 +1,2 @@
+pinhook==1.5.3
+pyquery==1.4.0
