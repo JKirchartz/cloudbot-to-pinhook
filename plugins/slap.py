@@ -8,7 +8,7 @@ A slap plugin
 
 @p.listener('slaplistener')
 def slaplistener(msg):
-    if re.search("slaps?\s+" + msg.botnick, msg.text.strip(), re.I | re.M) is not None:
+    if "slaps " + msg.botnick in msg.text.lower():
         print("I've been slapped!")
         if random.randint(0,1) == 0:
             print("so I screamed.")

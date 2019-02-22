@@ -37,4 +37,4 @@ def log(msg):
       text=line.text,
       char=char(line.nick)
     ))
-  return pinhook.plugin.message(' | '.join(output))
+  return pinhook.plugin.message(' | '.join(o['text'] for o in output))

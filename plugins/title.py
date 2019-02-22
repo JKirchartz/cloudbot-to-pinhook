@@ -18,5 +18,6 @@ def titler(msg):
         print('found title:' + title)
         return pinhook.plugin.message(title)
   except Exception as e:
-    print(e)
+    # ignore errors
+    # print(e)
     return
