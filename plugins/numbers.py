@@ -15,12 +15,12 @@ def get_number(num):
     if math != "false":
         return math.decode("utf-8")
 
-#@p.listener('numbers')
-#def numbers(msg):
-#    if msg.channel == "#counting" and msg.text.strip().isdigit():
-#        output = get_number(msg.text.strip())
-#        if output and output != "false":
-#            msg.privmsg('#counting-meta', "Interesting Number Detected: " + str(output))
+@p.listener('numbers')
+def numbers(msg):
+    if msg.channel == "#counting" and msg.text.strip().isdigit():
+        output = get_number(msg.text.strip())
+        if output and output != "false":
+            msg.privmsg('#counting-meta', "Interesting Number Detected: " + str(output))
 
 @p.register('!num', 'Get interesting facts about a number. Usage: !num [int|random]')
 def num(msg):

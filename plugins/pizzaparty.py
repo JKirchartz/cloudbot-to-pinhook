@@ -18,7 +18,6 @@ def pizza(msg):
         return p.message(generate())
 
 @p.register('!pp')
-@p.register('!party')
 @p.register('!pizzaparty')
 def party(msg):
     if msg.arg:

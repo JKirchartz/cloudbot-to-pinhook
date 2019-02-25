@@ -14,6 +14,7 @@ import re
 
 mcache = dict()
 buffer_size = 1
+usage = "!m[unge] [ubbi|circle|flip|vaporwave|mock|russian] -- munges previous line, or provided text"
 
 # spongemock.py
 # author: Noah Krim
@@ -258,7 +259,7 @@ def munge(text, function='mock'):
   if fun == 'aesthetic' or fun == 'vaporwave':
       return vaporwave(text)
   elif fun == 'ubbi':
-      return re.sub(r"[aeiou]+", r"ub$0");
+      return re.sub(r"([aeiou]+)", r"ub\1", text);
   elif fun == 'mock':
       return mock(text)
   if fun == 'circled':
@@ -267,19 +268,20 @@ def munge(text, function='mock'):
       return unicode_offset(text, fun)
   elif fun in json_mungers:
       return munger(text, fun)
+  elif fun == "help":
+      return usage
   else:
       return " ".join(["no munger named", fun])
 
 @pinhook.plugin.listener('track')
 def track(msg):
   if not str(msg.text).startswith(('!', '.', ';', ':')):
-      key = (msg.channel, msg.nick)
-      mcache[key] = str(msg.text)
+      mcache[msg.channel] = str(msg.text)
 
-@pinhook.plugin.register("!m", "!munge <format> -- munges previous line, or provided text")
-@pinhook.plugin.register("!munge", "!munge <format> -- munges previous line, or provided text")
+
+@pinhook.plugin.register("!m", usage)
+@pinhook.plugin.register("!munge", usage)
 def munge_command(msg):
-  """!m(unge) ubbi, circle, flip, vaporwave, mock, russian; works on either the last line of text in the channel, or any text placed after the munge style"""
   output = ""
   text = msg.arg
   if len(text.split()) >= 2:
@@ -288,11 +290,11 @@ def munge_command(msg):
   else:
         try:
             if len(text):
-                output = munge(mcache[(msg.channel, msg.nick)], text)
+                output = munge(mcache[msg.channel], text)
             else:
-                output = munge(mcache[(msg.channel, msg.nick)])
+                output = munge(mcache[msg.channel])
         except KeyError:
-            output = "Not Enough Messages."
+            output = "Invalid Munger or Not Enough Messages. Usage: " + usage
 
   return pinhook.plugin.message(output)
 
