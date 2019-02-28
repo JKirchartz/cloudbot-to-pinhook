@@ -4,7 +4,7 @@ from pinhook.bot import Bot
 
 ph = Bot(
     channels=['#discord', '#fnord'],
-    nickname='DocVuDu',
+    nickname='lurch',
     server='irc.maddshark.net',
     ops=['derkirche']
 )
