@@ -7,6 +7,7 @@ from random import choice
 A plugin for playing Jeopardy!
 """
 
+# TODO: make a score-keeping system
 jeopardy_tmp = {}
 alex = {
         "ask": ["Here is the clue", "Here is your clue"],
