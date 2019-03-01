@@ -3,7 +3,7 @@
 from pinhook.bot import Bot
 
 bot = Bot(
-        channels=['#aaa', '#counting', '#counting-meta', '#bots'],
+        channels=['#aaa', '#counting', '#counting-meta', '#counting-anarchy', '#bots'],
         nickname='lurch',
         server='localhost',
         ops=['kirch']
