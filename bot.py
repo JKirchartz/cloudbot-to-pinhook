@@ -6,6 +6,6 @@ ph = Bot(
     channels=['#discord', '#fnord'],
     nickname='lurch',
     server='irc.maddshark.net',
-    ops=['derkirche']
+    ops=['DerKirche']
 )
 ph.start()

@@ -1,4 +1,5 @@
 import pinhook.plugin as p
+import re
 import random
 
 """
@@ -11,7 +12,7 @@ wang_count=0
 def numberwang(msg):
     global digit_count
     global wang_count
-    if msg.channel == "#counting-anarchy" and msg.text.strip().isdigit():
+    if msg.channel == "#counting-anarchy" and re.compile("[0-9a-fx]", re.I).match(msg.text):
         digit_count = digit_count + 2
         if digit_count > random.randint(3,20) and wang_count < 1:
             wang_count = wang_count + 1
