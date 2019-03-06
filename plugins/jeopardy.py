@@ -1,6 +1,7 @@
 import pinhook.plugin as p, re
 import urllib.request as http
 import json
+import shelve
 import fuzzyset
 from random import choice
 
@@ -19,6 +20,18 @@ alex = {
 formquestion_rex = re.compile(r'(?:\b(who|what|where|when|why|how)\b\s+\b(is|was|are|were)\b\s+)?(?P<answer>.*)\??')
 html = re.compile(r'<[^>]+>')
 
+def score(msg, points):
+    s = shelve.open('jeopardy.db', writeback=True)
+    key = str(msg.nick + msg.channel)
+    if points:
+        if key in s:
+            s[key] = int(s[key]) + int(points)
+        else:
+            s[key] = int(points)
+    output = s[key]
+    s.sync()
+    s.close()
+    return str(output)
 
 def compare(guess, answer):
     a = fuzzyset.FuzzySet()
@@ -56,6 +69,7 @@ def jeopardyanswer(msg):
             points = jeopardy_tmp[(msg.nick, msg.channel)]["points"]
             if points:
                 msg.privmsg(msg.channel, "{}, {}. You get {} points.".format(choice(alex["correct"]), msg.nick, points))
+                msg.privmsg(msg.channel, "{}, this brings your total score to: {}".format(msg.nick, score(msg, points)))
             else:
                 msg.privmsg(msg.channel, "{}, {}. It's {}.".format(choice(alex["correct"]), msg.nick, answer))
         else:
@@ -66,6 +80,9 @@ def jeopardyanswer(msg):
 @p.register('!j', 'Ask a Jeopardy Question')
 @p.register('!jeopardy', 'Ask a Jeopardy Question')
 def jeopardy(msg):
+    if msg.arg == "score" or msg.arg == "points":
+        return p.message("{}, you have {} points".format(msg.nick, score(msg, None)))
+
     output = getquestion(msg)
     if output:
         return p.message("The Category is '{}'. {}: {}".format(output["cat"], choice(alex["ask"]), output["q"]))
